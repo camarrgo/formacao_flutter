@@ -1,3 +1,6 @@
+# Verifique as branches
+na main nao havera nada, para verificar a aula por favor abra as Branchs
+
 # formacao_flutter
 Minha formação em Flutter
 
