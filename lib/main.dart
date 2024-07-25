@@ -3,13 +3,20 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+int valorBandeira = 0;
+
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,35 +29,45 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('Tarefas'),
         ),
-        body: ListView(
-          //nao usa o mainAxis no ListView pq so funciona em Container
-          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: Container(
+          child: Stack(
+            children: [
+              Tesk('Escolha um time', Colors.white, '', 0),
+              Tesk('Athletico PR', Colors.red, 'Primeira Divisão', 1),
+              Tesk('Coritiba', Colors.green, 'Segunda Divisão', 2),
+              Tesk('Parana Club', Colors.blue, 'Terceira Divisão', 3),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  FloatingActionButton.extended(
 
-          //direção do scroll
-          scrollDirection: Axis.vertical,
+                    onPressed: () {
 
-          children: [
-            Tesk(
-                'Aprender Flutter no cafe da manha comendo churrasco adasd asdasd asdas das dasd asda sd'),
-            Tesk('Andar de bike'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-          ],
+
+                      print('TRocou de time: $valorBandeira');
+                      //_TeskState().aumenta();
+                       setState(() {
+                         trocaTime();
+                       });
+                    },
+                    label: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.flag),
+                        SizedBox(width: 5), // Espaço entre os ícones
+                        Text('TROCAR O TIME'),
+                        SizedBox(width: 5),
+                        Icon(Icons.flag),
+                        SizedBox(width: 5), // Espaço entre ícone e texto
+
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
         floatingActionButton: FloatingActionButton(onPressed: () {
           print('Apertou');
@@ -60,98 +77,78 @@ class MyApp extends StatelessWidget {
   }
 }
 
+trocaTime(){
+  Random trocar = Random();
+  valorBandeira = trocar.nextInt(3)+1;
+  //return valorBandeira = trocar.nextInt(3)+1;
+}
+
 //Tesk é tarefa em pt kk qualquer nome
 class Tesk extends StatefulWidget {
   final String nome;
+  Color bandeira;
+  final String divizao;
+  final int ordem;
 
-  Tesk(this.nome);
+  Tesk(this.nome, this.bandeira, this.divizao, this.ordem);
 
   @override
   State<Tesk> createState() => _TeskState();
 }
 
 class _TeskState extends State<Tesk> {
-  // const Tesk(this.nome,{super.key});
 
-  //a varaivel foi colocada antes do override assim ele nao vai ficar setando toda vez o valor
-  int nivel = 0;
+  int nivel = 1;
 
   @override
   Widget build(BuildContext context) {
-    //se colocar a variavel depois do @OVERRIDE ele sempre vai ficar contruindo por conta do build
-    //int nivel = 0;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        color: Colors.black,
-        child: Stack(
-          children: [
-            Container(
-              color: Colors.blue,
-              height: 140,
-            ),
-            Column(
-              children: [
-                Container(
-                  color: Colors.white,
-                  height: 100,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        color: Colors.black26,
-                        width: 72,
-                        height: 100,
-                      ),
-                      Container(
-                        width: 200,
-                        child: Text(
-                          widget.nome,
-                          style: TextStyle(
-                              fontSize: 24, overflow: TextOverflow.ellipsis),
-                        ),
-                      ),
-                      ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              nivel++;
-                              if (nivel > 10) {
-                                nivel = 0;
-                              }
-                            });
-                            print(nivel);
-                          },
-                          child: Icon(Icons.arrow_drop_up)),
-                    ],
+
+
+
+
+    if(widget.ordem == valorBandeira){
+      if(valorBandeira == 0){
+        widget.bandeira = Colors.black;
+      }
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          alignment: Alignment.center,
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    color: widget.bandeira,
+                    width: 150,
+                    height: 150,
+                    child: Text(
+                      widget.nome,
+
+                      style: TextStyle(color: Colors.white, fontSize: 25),
+                    ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Container(
-                        child: LinearProgressIndicator(
-                          color: Colors.red,
-                          value: nivel / 10,
-                        ),
-                        width: 200,
-                      ),
+                  Container(
+                    alignment: Alignment.center,
+                    color: widget.bandeira,
+                    width: 150,
+                    height: 50,
+                    child: Text(
+                      widget.divizao,
+                      style: TextStyle(color: Colors.white, fontSize: 15),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Nível: $nivel',
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }else{
+      return Container();
+    }
+
+
   }
 }

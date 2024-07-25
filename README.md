@@ -9,3 +9,6 @@ elementos basicos
 
 # Aula 03 Exploradno Stateless vs Stateful
 adicionei uma funcao que toda vez que chega no "nivel 10" ele zera , aula bem pratica
+
+# Primeiro desafio concluido
+alterando o time conforme clica no button
