@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,81 +18,136 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Container(
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Tarefas'),
+        ),
+        body: ListView(
+          //nao usa o mainAxis no ListView pq so funciona em Container
+          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+          //direção do scroll
+          scrollDirection: Axis.vertical,
+
           children: [
-            Stack(
-              alignment: AlignmentDirectional.center,
-              children: [
-                Container(
-                  color: Colors.red,
-                  width: 100,
-                  height: 100,
-                ),
-                Container(
-                  color: Colors.blue,
-                  width: 50,
-                  height: 50,
-                ),
-              ],
-            ),
-            Stack(
-              alignment: AlignmentDirectional.center,
-              children: [
-                Container(
-                  color: Colors.blue,
-                  width: 100,
-                  height: 100,
-                ),
-                Container(
-                  color: Colors.red,
-                  width: 50,
-                  height: 50,
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  color: Colors.cyan,
-                  height: 50,
-                  width: 50,
-                ),
-                Container(
-                  color: Colors.pink,
-                  height: 50,
-                  width: 50,
-                ),
-                Container(
-                  color: Colors.purple,
-                  height: 50,
-                  width: 50,
-                ),
-              ],
-            ),
+            Tesk(
+                'Aprender Flutter no cafe da manha comendo churrasco adasd asdasd asdas das dasd asda sd'),
+            Tesk('Andar de bike'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+            Tesk('Meditar'),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          print('Apertou');
+        }),
+      ),
+    );
+  }
+}
+
+//Tesk é tarefa em pt kk qualquer nome
+class Tesk extends StatefulWidget {
+  final String nome;
+
+  Tesk(this.nome);
+
+  @override
+  State<Tesk> createState() => _TeskState();
+}
+
+class _TeskState extends State<Tesk> {
+  // const Tesk(this.nome,{super.key});
+
+  //a varaivel foi colocada antes do override assim ele nao vai ficar setando toda vez o valor
+  int nivel = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    //se colocar a variavel depois do @OVERRIDE ele sempre vai ficar contruindo por conta do build
+    //int nivel = 0;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        color: Colors.black,
+        child: Stack(
+          children: [
             Container(
-              color: Colors.amber,
-              height: 30,
-              width: 300,
-              child: Text(
-                'Texto',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 28,
-                ),
-                textAlign: TextAlign.center,
-              ),
+              color: Colors.blue,
+              height: 140,
             ),
-            ElevatedButton(
-              onPressed: () {
-                print("APertou botao");
-              },
-              child: Text("APerte aqui"),
+            Column(
+              children: [
+                Container(
+                  color: Colors.white,
+                  height: 100,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        color: Colors.black26,
+                        width: 72,
+                        height: 100,
+                      ),
+                      Container(
+                        width: 200,
+                        child: Text(
+                          widget.nome,
+                          style: TextStyle(
+                              fontSize: 24, overflow: TextOverflow.ellipsis),
+                        ),
+                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              nivel++;
+                              if (nivel > 10) {
+                                nivel = 0;
+                              }
+                            });
+                            print(nivel);
+                          },
+                          child: Icon(Icons.arrow_drop_up)),
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Container(
+                        child: LinearProgressIndicator(
+                          color: Colors.red,
+                          value: nivel / 10,
+                        ),
+                        width: 200,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Nível: $nivel',
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ],
         ),
