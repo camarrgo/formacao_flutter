@@ -9,3 +9,7 @@ elementos basicos
 
 # Aula 03 Exploradno Stateless vs Stateful
 adicionei uma funcao que toda vez que chega no "nivel 10" ele zera , aula bem pratica
+
+# Desafio Faça como eu fiz: o Widget contra ataca
+fiz uma competicao de carros.
+Quem chegar a 100km ganha 1 ponto =)

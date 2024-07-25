@@ -3,13 +3,22 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
+int pontosGeral = 0;
+var gerarNumero = false;
+
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,7 +29,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Tarefas'),
+          title: Text('Quem é mais rápido?'),
         ),
         body: ListView(
           //nao usa o mainAxis no ListView pq so funciona em Container
@@ -31,30 +40,33 @@ class MyApp extends StatelessWidget {
 
           children: [
             Tesk(
-                'Aprender Flutter no cafe da manha comendo churrasco adasd asdasd asdas das dasd asda sd'),
-            Tesk('Andar de bike'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
+                'Flash'),
+            Tesk('A Luz'),
+            Tesk('Meu Peugeot'),
+            FloatingActionButton.extended(
+              onPressed: () {
+                print('Apertou');
+                //_TeskState().aumenta();
+                setState(() {
+                  gerarNumero = true;
+                });
+              },
+              label: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.speed),
+                  SizedBox(width: 5), // Espaço entre os ícones
+                  Text('ACELERAR'),
+                  SizedBox(width: 5),
+                  Icon(Icons.car_crash),
+                  SizedBox(width: 5), // Espaço entre ícone e texto
+
+                ],
+              ),
+            ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(onPressed: () {
-          print('Apertou');
-        }),
+        floatingActionButton: FloatingActionButton(onPressed: () {}),
       ),
     );
   }
@@ -75,11 +87,35 @@ class _TeskState extends State<Tesk> {
 
   //a varaivel foi colocada antes do override assim ele nao vai ficar setando toda vez o valor
   int nivel = 0;
+  int allLvl = 0;
+  int valordoAgeral = 0;
+  int pontosSomadosTask = 0;
+
+
+  int aumentaIntTask() {
+    Random ram = Random();
+    int aleatorio = ram.nextInt(20);
+    nivel+=aleatorio;
+    return nivel;
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     //se colocar a variavel depois do @OVERRIDE ele sempre vai ficar contruindo por conta do build
     //int nivel = 0;
+
+    if(gerarNumero){
+      valordoAgeral = aumentaIntTask();
+      if(valordoAgeral > 100){
+        valordoAgeral = 0;
+        nivel = 0;
+        pontosSomadosTask++;
+      }
+    }
+
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -118,8 +154,12 @@ class _TeskState extends State<Tesk> {
                               if (nivel > 10) {
                                 nivel = 0;
                               }
+                              // if (valordoAgeral > 100) {
+                              //   valordoAgeral = 0;
+                              // }
                             });
-                            print(nivel);
+                            print("ValorNivel: $nivel");
+                            // print("valordeGeral: $valordoAgeral");
                           },
                           child: Icon(Icons.arrow_drop_up)),
                     ],
@@ -129,20 +169,24 @@ class _TeskState extends State<Tesk> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
                       child: Container(
                         child: LinearProgressIndicator(
                           color: Colors.red,
-                          value: nivel / 10,
+                          value: valordoAgeral / 100,
                         ),
-                        width: 200,
+                        width: 180,
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Nível: $nivel',
-                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
+                      child: Container(
+                        width: 180,
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: Text(
+                          'Pontos: $pontosSomadosTask e KM/h: ${valordoAgeral}',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
                       ),
                     ),
                   ],
