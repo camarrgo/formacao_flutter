@@ -35,25 +35,25 @@ class MyApp extends StatelessWidget {
 
           children: [
             Tesk(
-                'Aprender Flutter no cafe da manha comendo churrasco adasd asdasd asdas das dasd asda sd'),
-            Tesk('Andar de bike'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
-            Tesk('Meditar'),
+                'Aprender Flutter',
+                'https://cdn-images-1.medium.com/v2/resize:fit:1200/1*5-aoK8IBmXve5whBQM90GA.png',
+                3),
+            Tesk(
+                'Andar de bike',
+                'https://media.unimedcampinas.com.br/b9fa3254-5c4d-4f60-b3f9-e1a1dbbfa5e4',
+                1),
+            Tesk(
+                'Meditar',
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUqDS-0-oReeghWnA7aL5W3nsonIH3N3wHaA&s',
+                5),
+            Tesk(
+                'Jogar bola',
+                'https://static.wixstatic.com/media/f5ad8a_1e6f978c5eb24dc39b583320de02149e~mv2.jpg/v1/fill/w_640,h_428,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/f5ad8a_1e6f978c5eb24dc39b583320de02149e~mv2.jpg',
+                2),
+            Tesk(
+                'Jogar Video game',
+                'https://www.napratica.org.br/wp-content/uploads/2017/07/destaque-videogame.jpeg',
+                1),
           ],
         ),
         floatingActionButton: FloatingActionButton(onPressed: () {
@@ -67,8 +67,10 @@ class MyApp extends StatelessWidget {
 //Tesk é tarefa em pt kk qualquer nome
 class Tesk extends StatefulWidget {
   final String nome;
+  final String foto;
+  final int dificuldade;
 
-  Tesk(this.nome);
+  Tesk(this.nome, this.foto, this.dificuldade);
 
   @override
   State<Tesk> createState() => _TeskState();
@@ -87,33 +89,96 @@ class _TeskState extends State<Tesk> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        color: Colors.black,
+        color: Colors.white,
         child: Stack(
           children: [
             Container(
-              color: Colors.blue,
+              //color: Colors.blue,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                color: Colors.blue,
+              ),
               height: 140,
             ),
             Column(
               children: [
                 Container(
-                  color: Colors.white,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.white,
+                  ),
                   height: 100,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        color: Colors.black26,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: Colors.black26,
+                        ),
                         width: 72,
                         height: 100,
-                      ),
-                      Container(
-                        width: 200,
-                        child: Text(
-                          widget.nome,
-                          style: TextStyle(
-                              fontSize: 24, overflow: TextOverflow.ellipsis),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: Image.network(
+                            widget.foto,
+                            fit: BoxFit.cover,
+                          ),
                         ),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 200,
+                            child: Text(
+                              widget.nome,
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.star,
+                                size: 15,
+                                color: (widget.dificuldade >= 1)
+                                    ? Colors.blue
+                                    : Colors.blue[100],
+                              ),
+                              Icon(
+                                Icons.star,
+                                size: 15,
+                                color: (widget.dificuldade >= 2)
+                                    ? Colors.blue
+                                    : Colors.blue[100],
+                              ),
+                              Icon(
+                                Icons.star,
+                                size: 15,
+                                color: (widget.dificuldade >= 3)
+                                    ? Colors.blue
+                                    : Colors.blue[100],
+                              ),
+                              Icon(
+                                Icons.star,
+                                size: 15,
+                                color: (widget.dificuldade >= 4)
+                                    ? Colors.blue
+                                    : Colors.blue[100],
+                              ),
+                              Icon(
+                                Icons.star,
+                                size: 15,
+                                color: (widget.dificuldade >= 5)
+                                    ? Colors.blue
+                                    : Colors.blue[100],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                       Container(
                         height: 50,
@@ -122,7 +187,7 @@ class _TeskState extends State<Tesk> {
                           onPressed: () {
                             setState(() {
                               nivel++;
-                              if (nivel > 10) {
+                              if (nivel > widget.dificuldade * 10) {
                                 nivel = 0;
                               }
                             });
@@ -132,20 +197,25 @@ class _TeskState extends State<Tesk> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(Icons.arrow_drop_up),
+                              Icon(
+                                Icons.arrow_drop_up,
+                                color: Colors.white,
+                              ),
                               Text(
                                 'UP',
-                                style: TextStyle(fontSize: 12),
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.white),
                               ),
                             ],
                           ),
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius:
-                                  BorderRadius.zero, // Sem bordas arredondadas
+                                  BorderRadius.circular(4), // Sem bordas arredondadas
                             ),
-                            padding: EdgeInsets.all(
-                                0), // Ajuste o padding conforme necessário
+                            padding: EdgeInsets.all(0),
+                            backgroundColor: Colors
+                                .blue, // Ajuste o padding conforme necessário
                           ),
                         ),
                       ),
@@ -160,7 +230,9 @@ class _TeskState extends State<Tesk> {
                       child: Container(
                         child: LinearProgressIndicator(
                           color: Colors.red,
-                          value: nivel / 10,
+                          value: (widget.dificuldade > 0)
+                              ? (nivel / widget.dificuldade) / 10
+                              : 1,
                         ),
                         width: 200,
                       ),
