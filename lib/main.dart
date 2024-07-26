@@ -20,6 +20,10 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         appBar: AppBar(
+          leading: Container(
+            alignment: AlignmentDirectional.centerEnd,
+            child: Icon(Icons.task),
+          ),
           title: Text('Tarefas'),
         ),
         body: ListView(
@@ -111,7 +115,10 @@ class _TeskState extends State<Tesk> {
                               fontSize: 24, overflow: TextOverflow.ellipsis),
                         ),
                       ),
-                      ElevatedButton(
+                      Container(
+                        height: 50,
+                        width: 70,
+                        child: ElevatedButton(
                           onPressed: () {
                             setState(() {
                               nivel++;
@@ -121,7 +128,27 @@ class _TeskState extends State<Tesk> {
                             });
                             print(nivel);
                           },
-                          child: Icon(Icons.arrow_drop_up)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(Icons.arrow_drop_up),
+                              Text(
+                                'UP',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.zero, // Sem bordas arredondadas
+                            ),
+                            padding: EdgeInsets.all(
+                                0), // Ajuste o padding conforme necessário
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
