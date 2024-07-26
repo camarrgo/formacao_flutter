@@ -27,13 +27,13 @@ class _MyAppState extends State<MyApp> {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Tarefas'),
+          title: Text('Desafio aula 04'),
         ),
         body: ListView(
           children: [
             Stack(
               children: [
-                Tesk('Pressione o\nbotão', Colors.white, '', 0, '', ''),
+                Tesk('Pressione o\nbotão', Colors.white, 'Pressione o Botão', 0, 'https://img.freepik.com/vetores-gratis/vetor-de-elementos-de-escudo-barroco-preto_53876-76064.jpg', ''),
                 Tesk(
                     'Athletico PR',
                     Colors.red,
@@ -166,17 +166,20 @@ class _TeskState extends State<Tesk> {
                       ),
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: widget.bandeira,
-                    ),
-                    width: 150,
-                    height: 100,
-                    child: Text(
-                      widget.divisao,
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: widget.bandeira,
+                      ),
+                      width: 150,
+                      height: 100,
+                      child: Text(
+                        widget.divisao,
+                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      ),
                     ),
                   ),
                   Container(
@@ -184,10 +187,10 @@ class _TeskState extends State<Tesk> {
                     width: 1920,
                     height: 300,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 8),
+                      padding: const EdgeInsets.only(top: 0),
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(40),
-                            child: Image.network(widget.backImagemDoTime, fit: BoxFit.cover,),
+                            child: (widget.backImagemDoTime != "") ? Image.network(widget.backImagemDoTime, fit: BoxFit.cover,) : Text(''),
 
                         ),
                     ),
