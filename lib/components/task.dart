@@ -17,6 +17,24 @@ class _TeskState extends State<Tesk> {
   // const Tesk(this.nome,{super.key});
 
   //a varaivel foi colocada antes do override assim ele nao vai ficar setando toda vez o valor
+
+  // Definindo um mapa de cores personalizadas
+  static const List<Color> customColors = [
+    //cores inspiradas no judo
+    Colors.white,
+    Colors.grey,
+    Colors.blue,
+    Color(0xFF0000FF), //azul escuro
+    Colors.yellow,
+    Colors.orange,
+    Colors.green,
+    Colors.deepPurple,
+    Colors.brown,
+    Colors.black,
+  ];
+  
+  int lvl = 0;
+  
   int nivel = 0;
 
   @override
@@ -33,7 +51,7 @@ class _TeskState extends State<Tesk> {
               //color: Colors.blue,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
-                color: Colors.blue,
+                color: customColors[lvl],
               ),
               height: 140,
             ),
@@ -88,7 +106,13 @@ class _TeskState extends State<Tesk> {
                             setState(() {
                               nivel++;
                               if (nivel > widget.dificuldade * 10) {
-                                nivel = 0;
+                                // aqui mudar a cor
+                                if(lvl < 9){
+                                  lvl++;
+                                  nivel = 0;
+                                }
+                                //print("valor do LVL= $lvl");
+
                               }
                             });
                             //print(nivel);
@@ -141,7 +165,7 @@ class _TeskState extends State<Tesk> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         'Nível: $nivel',
-                        style: const TextStyle(color: Colors.white, fontSize: 16),
+                        style: lvl > 0 ? const TextStyle(color: Colors.white, fontSize: 16) : const TextStyle(color: Colors.black, fontSize: 16),
                       ),
                     ),
                   ],
