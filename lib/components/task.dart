@@ -32,9 +32,9 @@ class _TeskState extends State<Tesk> {
     Colors.brown,
     Colors.black,
   ];
-  
+
   int lvl = 0;
-  
+
   int nivel = 0;
 
   @override
@@ -107,20 +107,19 @@ class _TeskState extends State<Tesk> {
                               nivel++;
                               if (nivel > widget.dificuldade * 10) {
                                 // aqui mudar a cor
-                                if(lvl < 9){
+                                if (lvl < 9) {
                                   lvl++;
                                   nivel = 0;
                                 }
                                 //print("valor do LVL= $lvl");
-
                               }
                             });
                             //print(nivel);
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(4), // Sem bordas arredondadas
+                              borderRadius: BorderRadius.circular(
+                                  4), // Sem bordas arredondadas
                             ),
                             padding: const EdgeInsets.all(0),
                             backgroundColor: Colors
@@ -165,7 +164,10 @@ class _TeskState extends State<Tesk> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         'Nível: $nivel',
-                        style: lvl > 0 ? const TextStyle(color: Colors.white, fontSize: 16) : const TextStyle(color: Colors.black, fontSize: 16),
+                        style: lvl > 0
+                            ? const TextStyle(color: Colors.white, fontSize: 16)
+                            : const TextStyle(
+                                color: Colors.black, fontSize: 16),
                       ),
                     ),
                   ],
