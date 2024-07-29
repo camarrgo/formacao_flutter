@@ -15,3 +15,6 @@ adicionei uma funcao que toda vez que chega no "nivel 10" ele zera , aula bem pr
 
 # Aula 4 bordas e imagens
 Aprendendo a adicionar mais styles diferentes e a adicionar imagens
+
+# PROJETO FINALIZADO
+AUla finalizada, farei agora o desafio final em outra branch
