@@ -1,10 +1,12 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:formacao_flutter/data/task_inherited.dart';
 
 class FormScreen extends StatefulWidget {
-  const FormScreen({super.key});
+  const FormScreen({super.key, required this.taskContext});
 
+  final BuildContext taskContext;
   @override
   State<FormScreen> createState() => _FormScreenState();
 }
@@ -17,13 +19,33 @@ class _FormScreenState extends State<FormScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
+  bool valueValidator(String? value){
+    if(value != null && value.isEmpty){
+      return true;
+    }
+    return false;
+  }
+
+  bool difficultyValidator(String? value){
+    if(value != null && value.isEmpty){
+      if(int.parse(value) > 5 ||
+          int.parse(value) < 1){
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Flutter:\n Controller, navegação e estados", style: TextStyle(fontSize: 20),),
+          title: const Text(
+            "Flutter:\n Controller, navegação e estados",
+            style: TextStyle(fontSize: 20),
+          ),
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -43,7 +65,7 @@ class _FormScreenState extends State<FormScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       validator: (String? value) {
-                        if (value != null && value.isEmpty) {
+                        if (valueValidator(value)) {
                           return 'Insira o nome da Tarefa!';
                         }
                         return null;
@@ -62,9 +84,7 @@ class _FormScreenState extends State<FormScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       validator: (value) {
-                        if (value!.isEmpty ||
-                            int.parse(value) > 5 ||
-                            int.parse(value) < 1) {
+                        if (difficultyValidator(value)) {
                           return 'Insira uma dificuldade entre 1 e 5';
                         }
                         return null;
@@ -84,14 +104,17 @@ class _FormScreenState extends State<FormScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       onChanged: (text) {
+                        debugPrint("PASSOU AQUI ONCHANGE");
                         urlValid = true;
                         setState(() {});
                       },
                       validator: (value) {
-                        if (value!.isEmpty) {
+                        if (valueValidator(value)) {
+                          urlValid = false;
                           return 'insira uma URL de imagem';
                         }
-                        if(!urlValid){
+                        if (!urlValid) {
+                          urlValid = false;
                           return 'insira uma URL de imagem VÁLIDA!';
                         }
                         urlValid = true;
@@ -120,9 +143,24 @@ class _FormScreenState extends State<FormScreen> {
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(
                         imageController.text,
-                        errorBuilder: (BuildContext context, Object error,
-                            StackTrace? stackTrace) {
+                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) {
+                            // Imagem carregou com sucesso, então a URL é válida
+                            urlValid = true;
+                            return child;
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                  : null,
+                            ),
+                          );
+                        },
+                        errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                          // Imagem falhou ao carregar, então a URL é inválida
                           urlValid = false;
+                          debugPrint("Erro ao carregar imagem");
                           return Image.asset('assets/images/noimage.png');
                         },
                         fit: BoxFit.cover,
@@ -131,15 +169,18 @@ class _FormScreenState extends State<FormScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          print(nameController.text);
-                          print(difficultyController.text);
-                          print(imageController.text);
-                          print(urlValid);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text("Printando tarefa!")));
-                        }
+                      if (_formKey.currentState!.validate()) {
+                        // print(nameController.text);
+                        // print(difficultyController.text);
+                        // print(imageController.text);
+                        // print(urlValid);
+
+                        TaskInherited.of(widget.taskContext).newTask(nameController.text, imageController.text, int.parse(difficultyController.text));
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Salvo!")));
+                        Navigator.pop(context);
+                      }
                     },
                     child: Text('Adicionar'),
                   ),

@@ -2,18 +2,22 @@
 import 'package:flutter/material.dart';
 import 'package:formacao_flutter/components/Difficulty.dart';
 
-class Tesk extends StatefulWidget {
+class Task extends StatefulWidget {
   final String nome;
   final String foto;
   final int dificuldade;
 
-  const Tesk(this.nome, this.foto, this.dificuldade, {super.key});
+  Task(this.nome, this.foto, this.dificuldade, {super.key});
+
+  int lvl = 0;
+
+  int nivel = 0;
 
   @override
-  State<Tesk> createState() => _TeskState();
+  State<Task> createState() => _TaskState();
 }
 
-class _TeskState extends State<Tesk> {
+class _TaskState extends State<Task> {
   // const Tesk(this.nome,{super.key});
 
   //a varaivel foi colocada antes do override assim ele nao vai ficar setando toda vez o valor
@@ -33,9 +37,14 @@ class _TeskState extends State<Tesk> {
     Colors.black,
   ];
 
-  int lvl = 0;
 
-  int nivel = 0;
+
+  bool assetOrNetwork() {
+    if (widget.foto.contains('http')) {
+      return false;
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +60,7 @@ class _TeskState extends State<Tesk> {
               //color: Colors.blue,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
-                color: customColors[lvl],
+                color: customColors[widget.lvl],
               ),
               height: 140,
             ),
@@ -76,10 +85,15 @@ class _TeskState extends State<Tesk> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(4),
                           //child: Image.asset(
-                          child: Image.network(
-                            widget.foto,
-                            fit: BoxFit.cover,
-                          ),
+                          child: assetOrNetwork()
+                              ? Image.asset(
+                                  widget.foto,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.network(
+                                  widget.foto,
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                       ),
                       Column(
@@ -104,12 +118,12 @@ class _TeskState extends State<Tesk> {
                         child: ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              nivel++;
-                              if (nivel > widget.dificuldade * 10) {
+                              widget.nivel++;
+                              if (widget.nivel > widget.dificuldade * 10) {
                                 // aqui mudar a cor
-                                if (lvl < 9) {
-                                  lvl++;
-                                  nivel = 0;
+                                if (widget.lvl < 9) {
+                                  widget.lvl++;
+                                  widget.nivel = 0;
                                 }
                                 //print("valor do LVL= $lvl");
                               }
@@ -155,7 +169,7 @@ class _TeskState extends State<Tesk> {
                         child: LinearProgressIndicator(
                           color: Colors.red,
                           value: (widget.dificuldade > 0)
-                              ? (nivel / widget.dificuldade) / 10
+                              ? (widget.nivel / widget.dificuldade) / 10
                               : 1,
                         ),
                       ),
@@ -163,8 +177,8 @@ class _TeskState extends State<Tesk> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Nível: $nivel',
-                        style: lvl > 0
+                        'Nível: ${widget.nivel}',
+                        style: widget.lvl > 0
                             ? const TextStyle(color: Colors.white, fontSize: 16)
                             : const TextStyle(
                                 color: Colors.black, fontSize: 16),

@@ -7,7 +7,7 @@ class Difficulty extends StatelessWidget {
     required this.widget,
   });
 
-  final Tesk widget;
+  final Task widget;
 
   @override
   Widget build(BuildContext context) {
